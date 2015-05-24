@@ -28,11 +28,12 @@ shinyUI(fluidPage(
         
         # generate computation here
         mainPanel(
+            h2("Model:"), p(textOutput("formula")),
             wellPanel(
-                h3("Your own car data:")
+                h2("Your own car data:")
             ),
-            h3("prediction of your car's performance"),
-            p(textOutput("computation"))
+            h2("Prediction of Your Car's Performance:"),
+            p(textOutput("prediction"))
         )
     )
 ))
