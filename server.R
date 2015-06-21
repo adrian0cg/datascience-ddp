@@ -6,11 +6,6 @@ transmissions <- c("Automatic", "Manual")
 mtcars$am <- factor(mtcars$am, labels = transmissions)
 variables <- colnames(mtcars)
 
-buildFormula <- function (predictor, regressors) {
-    regressorPart <- paste(regressors, collapse = " + ")
-    paste(c(predictor,  regressorPart), collapse = " ~ ")
-}
-
 conditionalInputFor <- function (regressor) {
     conditionalPanel(
         condition = paste0("input.regressors.indexOf(",regressor,") != -1"),
@@ -38,9 +33,23 @@ except <- function(vector, eltToRemove) {
 }
 
 shinyServer(function(input, output) {
+
+    buildFormula <- reactive({
+        regressorPart <- paste(input$regressors, collapse = " + ")
+        paste(c(input$predictor,  regressorPart), collapse = " ~ ")
+    })
+    
+    buildModel <- reactive({
+        lm(buildFormula(), data=mtcars)
+    })
     
     output$formula <- renderText({
-        buildFormula(input$predictor, input$regressors)
+        buildFormula()
+    })
+    
+    output$model <- renderPrint({
+        print(buildModel())
+        summary(buildModel())
     })
 
     output$prediction <- renderText({"bla"})

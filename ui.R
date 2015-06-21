@@ -25,7 +25,9 @@ shinyUI(fluidPage(
         
         # generate computation here
         mainPanel(
-            h2("Model:"), h4(textOutput("formula")),
+            h2("Model:"),
+            h4(textOutput("formula")),
+            p(verbatimTextOutput("model")),
             inputPanel(
                 h2("Your own car data:"),
                 uiOutput("ownRegressorInput")
