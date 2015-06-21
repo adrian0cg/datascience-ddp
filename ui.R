@@ -33,7 +33,7 @@ shinyUI(fluidPage(
                 uiOutput("ownRegressorInput")
             ),
             h2("Prediction of Your Car's Performance:"),
-            p(textOutput("prediction"))
+            h4(textOutput("prediction"))
         )
     )
 ))

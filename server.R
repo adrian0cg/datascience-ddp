@@ -6,7 +6,7 @@ transmissions <- c("Automatic", "Manual")
 mtcars$am <- factor(mtcars$am, labels = transmissions)
 variables <- colnames(mtcars)
 
-conditionalInputFor <- function (regressor) {
+conditionalInputForRegressors <- function (regressor) {
     conditionalPanel(
         condition = paste0("input.regressors.indexOf(",regressor,") != -1"),
         switch(
@@ -26,6 +26,10 @@ conditionalInputFor <- function (regressor) {
             )
         )
     )
+}
+
+getInputForRegressors <- function (data, regressor) {
+    data[[paste0("own_",regressor)]]
 }
 
 except <- function(vector, eltToRemove) {
@@ -52,7 +56,17 @@ shinyServer(function(input, output) {
         summary(buildModel())
     })
 
-    output$prediction <- renderText({"bla"})
+    output$prediction <- renderText({
+        myCar <- data.frame(lapply(input$regressors, function(x) {getInputForRegressors(input,x)}))
+        names(myCar) <- input$regressors
+        paste(
+            input$predictor,
+            predict(
+                buildModel(),
+                newdata = myCar
+            ), sep=" = "
+        )
+    })
     
     output$regressorChoices <- renderUI({
         checkboxGroupInput(
@@ -62,7 +76,7 @@ shinyServer(function(input, output) {
     })
     
     output$ownRegressorInput <- renderUI({
-        lapply(input$regressors, conditionalInputFor)
+        lapply(input$regressors, conditionalInputForRegressors)
     })
     
 })
