@@ -28,8 +28,10 @@ lm(predictor ~ regressors, data = mtcars)
 ```
 with `regressors` treated independently (no interactions).
 
-Interesting Cases (try for yourself!)
+Interesting Cases
 ========================================================
 
 - `qsec ~ wt + hp + vs`
 - `mpg ~ wt + am + cyl`
+- Try for yourself:
+https://adrian0cg.shinyapps.io/datascience-ddp
