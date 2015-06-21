@@ -52,7 +52,6 @@ shinyServer(function(input, output) {
     })
     
     output$model <- renderPrint({
-        print(buildModel())
         summary(buildModel())
     })
 
@@ -69,9 +68,10 @@ shinyServer(function(input, output) {
     })
     
     output$regressorChoices <- renderUI({
+        regressorNames <- except(variables, input$predictor)
         checkboxGroupInput(
-            inputId="regressors", label="Variables to be regressed on:",
-            choices=except(variables, input$predictor)
+            inputId = "regressors", label = "Variables to be regressed on:", inline = TRUE,
+            choices = regressorNames, selected =  regressorNames[1]
         )
     })
     
