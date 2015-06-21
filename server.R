@@ -2,7 +2,8 @@ library(shiny)
 library(datasets)
 
 # global base data
-mtcars$am <- factor(mtcars$am, labels = c("Automatic", "Manual"))
+transmissions <- c("Automatic", "Manual")
+mtcars$am <- factor(mtcars$am, labels = transmissions)
 variables <- colnames(mtcars)
 
 buildFormula <- function (predictor, regressors) {
@@ -13,9 +14,21 @@ buildFormula <- function (predictor, regressors) {
 conditionalInputFor <- function (regressor) {
     conditionalPanel(
         condition = paste0("input.regressors.indexOf(",regressor,") != -1"),
-        numericInput(
-            paste0("own_",regressor), regressor,
-            value = median(mtcars[[regressor]]), min = min(mtcars[[regressor]]), max = max(mtcars[[regressor]])
+        switch(
+            regressor,
+            numericInput(
+                paste0("own_",regressor), regressor,
+                value = median(mtcars[[regressor]]), min = min(mtcars[[regressor]]), max = max(mtcars[[regressor]])
+            ),
+            "am" = radioButtons(
+                paste0("own_",regressor), regressor,
+                choices = transmissions, inline = TRUE
+            ),
+            "cyl" = numericInput(
+                paste0("own_",regressor), regressor,
+                value = median(mtcars[[regressor]]), step =1,
+                min = min(mtcars[[regressor]]), max = max(mtcars[[regressor]])
+            )
         )
     )
 }
