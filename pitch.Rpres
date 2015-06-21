@@ -1,0 +1,35 @@
+MCPC - My Car Performance Calculator
+========================================================
+author:  Adrian CG
+date: 21.6.15
+
+What is it for?
+========================================================
+
+- Based on the  `mtcars` dataset,
+- it aims to predict **key car performance metrics**
+- by a **linear model**
+
+Features
+========================================================
+
+- dynamically rendered inputs
+- reactive calculation of prediction model
+- reactive evaluation of prediction
+
+Linear Model
+========================================================
+
+Assume `predictor` $p$ and `regressors` $r_i$, then
+
+$$ p = \sum r_i $$ 
+```{r, linearModel, eval=FALSE}
+lm(predictor ~ regressors, data = mtcars)
+```
+with `regressors` treated independently (no interactions).
+
+Interesting Cases (try for yourself!)
+========================================================
+
+- `qsec ~ wt + hp + vs`
+- `mpg ~ wt + am + cyl`
