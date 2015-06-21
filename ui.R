@@ -20,17 +20,15 @@ shinyUI(fluidPage(
                 inputId="predictor", label="Variable to be predicted:",
                 choices=variables
             ),
-            checkboxGroupInput(
-                inputId="regressors", label="Variables to be regressed on:",
-                choices=variables
-            )
+            uiOutput("regressorChoices")
         ),
         
         # generate computation here
         mainPanel(
-            h2("Model:"), p(textOutput("formula")),
-            wellPanel(
-                h2("Your own car data:")
+            h2("Model:"), h4(textOutput("formula")),
+            inputPanel(
+                h2("Your own car data:"),
+                uiOutput("ownRegressorInput")
             ),
             h2("Prediction of Your Car's Performance:"),
             p(textOutput("prediction"))
