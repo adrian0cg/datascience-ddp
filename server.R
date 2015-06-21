@@ -10,6 +10,16 @@ buildFormula <- function (predictor, regressors) {
     paste(c(predictor,  regressorPart), collapse = " ~ ")
 }
 
+conditionalInputFor <- function (regressor) {
+    conditionalPanel(
+        condition = paste0("input.regressors.indexOf(",regressor,") != -1"),
+        numericInput(
+            paste0("own_",regressor), regressor,
+            value = median(mtcars[[regressor]]), min = min(mtcars[[regressor]]), max = max(mtcars[[regressor]])
+        )
+    )
+}
+
 except <- function(vector, eltToRemove) {
     vector[- which(vector == eltToRemove)]    
 }
@@ -30,9 +40,7 @@ shinyServer(function(input, output) {
     })
     
     output$ownRegressorInput <- renderUI({
-        numericInput(
-            "ownWt", "wt", median(mtcars$wt), min=(mtcars$wt),max(mtcars$wt)
-        )
+        lapply(input$regressors, conditionalInputFor)
     })
     
 })
